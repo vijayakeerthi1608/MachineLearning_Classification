@@ -49,14 +49,19 @@ Five distinct supervised machine learning models are trained and evaluated using
 ├── app.py                  # Main Streamlit web application script
 ├── test_data.csv           # Sample test dataset for evaluations
 ├── requirements.txt        # Python package dependencies
-├── .gitignore              # Ignored files (venv, cache, local configs)
-└── model/
-    ├── train_models.py     # Script to train and save models
+├── model/    # Script to train and save models
     ├── logistic_regression.joblib
     ├── decision_tree.joblib
     ├── knn_classifier.joblib
     ├── naive_bayes.joblib
     └── random_forest.joblib
+├── notebooks/
+    ├── logistic_regression.ipynb
+    ├── decision_tree.ipynb
+    ├── knn_classifier.ipynb
+    ├── naive_bayes.ipynb
+    ├── random_forest.ipynb
+
 
 ```
 
