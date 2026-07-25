@@ -162,5 +162,3 @@ This application is fully optimized for **Streamlit Community Cloud**:
 ## 🏆 Overall Winner
 
 **Logistic Regression** is the top-performing model for this dataset. It achieves the highest accuracy, AUC, and MCC while maintaining low computational overhead. **Random Forest** serves as an excellent ensemble alternative.
-
-```
