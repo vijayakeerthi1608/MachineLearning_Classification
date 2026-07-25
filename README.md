@@ -1,146 +1,166 @@
-# Dry Bean Dataset Classification Project
+# 🌱 Dry Bean Dataset Classification Project
 
-This project trains and compares five classification models on the Dry Bean dataset:
+An end-to-end Machine Learning web application built with **Streamlit**, **Scikit-Learn**, and **Plotly** to classify dry bean varieties based on geometric features. The app provides interactive model evaluation, class-wise metrics analysis, and dynamic visual comparisons across multiple classification models.
 
-- Logistic Regression
-- Decision Tree Classifier
-- K-Nearest Neighbors
-- Naive Bayes
-- Random Forest
+---
 
+## 📋 Table of Contents
+- [Project Overview](#-project-overview)
+- [Key Features](#-key-features)
+- [Models Implemented](#-models-implemented)
+- [Repository Structure](#-repository-structure)
+- [Local Installation & Setup](#-local-installation--setup)
+- [Running the App](#-running-the-app)
+- [Deploying to Streamlit Cloud](#-deploying-to-streamlit-cloud)
+- [Model Evaluation & Analysis](#-model-evaluation--analysis)
+- [Summary of Model Behaviors](#-summary-of-model-behaviors)
+- [Overall Winner](#-overall-winner)
 
-## Files
+---
 
-- app.py: Streamlit web app for model comparison and prediction
-- model/train_models.py: trains the models and saves them to the model folder
-- test_data.csv: sample input file for prediction
-- requirements.txt: Python dependencies
+## 📌 Project Overview
+The objective of this project is to classify dry bean seeds into seven distinct varieties (`BARBUNYA`, `BOMBAY`, `CALI`, `DERMASON`, `HOROZ`, `SEKER`, `SIRA`) using physical shape, size, and boundary measurements. 
 
-## Setup
+Five distinct supervised machine learning models are trained and evaluated using standard classification metrics: **Accuracy, AUC, Precision, Recall, F1 Score, and MCC (Matthews Correlation Coefficient)**.
 
-1. Open the project folder.
-2. Create a virtual environment (optional but recommended).
-3. Install the dependencies:
+---
+
+## ✨ Key Features
+- **Interactive Light / Dark Mode**: Custom theme toggle in the sidebar that dynamically adjusts app styling and Plotly chart color schemes.
+- **Visual Model Comparisons**: Interactive grouped and horizontal bar charts comparing model performance metrics side-by-side.
+- **Confusion Matrix Heatmaps**: Color-coded, interactive confusion matrices for deep-dive error analysis per model.
+- **Custom CSV Predictions**: Upload any test dataset containing the required bean features and target classes to instantly evaluate all trained models.
+- **Detailed Class-level Metrics**: Inspect per-class precision, recall, F1-scores, and support counts.
+
+---
+
+## 🤖 Models Implemented
+1. **Logistic Regression**
+2. **Decision Tree Classifier**
+3. **k-Nearest Neighbors (kNN)**
+4. **Naive Bayes**
+5. **Random Forest Classifier (Ensemble)**
+
+---
+
+## 📁 Repository Structure
+```text
+.
+├── app.py                  # Main Streamlit web application script
+├── test_data.csv           # Sample test dataset for evaluations
+├── requirements.txt        # Python package dependencies
+├── .gitignore              # Ignored files (venv, cache, local configs)
+└── model/
+    ├── train_models.py     # Script to train and save models
+    ├── logistic_regression.joblib
+    ├── decision_tree.joblib
+    ├── knn_classifier.joblib
+    ├── naive_bayes.joblib
+    └── random_forest.joblib
+
+```
+
+---
+
+## ⚙️ Local Installation & Setup
+
+### Prerequisites
+
+* Python 3.10+ installed on your system.
+* Git installed.
+
+### 1. Clone the Repository
+
+```bash
+git clone [https://github.com/vijayakeerthi1608/MachineLearning_Classification.git](https://github.com/vijayakeerthi1608/MachineLearning_Classification.git)
+cd MachineLearning_Classification
+
+```
+
+### 2. Create and Activate a Virtual Environment
+
+* **On Windows (PowerShell):**
+
+```powershell
+python -m venv venv
+.\venv\Scripts\activate
+
+```
+
+* **On macOS / Linux:**
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+
+```
+
+### 3. Install Dependencies
 
 ```bash
 pip install -r requirements.txt
+
 ```
 
-4. Train the models:
+---
+
+## 🚀 Running the App
+
+### Option A: Retrain Models (Optional)
+
+If you wish to train the models from scratch and regenerate the `.joblib` files in the `model/` folder:
+
+
+### Option B: Launch the Streamlit Web App
+
+Run Streamlit via your active Python environment:
 
 ```bash
-python model/train_models.py
+python -m streamlit run app.py
+
 ```
 
-5. Run the app:
+Once executed, open your browser and navigate to **`http://localhost:8501`**.
 
-```bash
-streamlit run app.py
+---
+
+## ☁️ Deploying to Streamlit Cloud
+
+This application is fully optimized for **Streamlit Community Cloud**:
+
+1. Push your code to GitHub (ensure `requirements.txt` includes `plotly`, `streamlit`, `pandas`, `scikit-learn`, and `joblib`).
+2. Log in to [Streamlit Community Cloud](https://streamlit.io/cloud).
+3. Click **New app**, select your repository (`MachineLearning_Classification`), branch (`main`), and set the main file path to `app.py`.
+4. Click **Deploy**. Streamlit Cloud will automatically install dependencies from `requirements.txt` and host your live application 24/7!
+
+---
+
+## 📊 Model Evaluation & Analysis
+
+### Overall Performance Comparison (Test Set)
+
+| ML Model Name | Accuracy | AUC | Precision | Recall | F1 Score | MCC |
+| --- | --- | --- | --- | --- | --- | --- |
+| **Logistic Regression** | **0.9214** | **0.9948** | **0.9222** | **0.9214** | **0.9216** | **0.9050** |
+| **Decision Tree** | 0.8920 | 0.9450 | 0.8917 | 0.8920 | 0.8916 | 0.8696 |
+| **kNN** | 0.9166 | 0.9833 | 0.9174 | 0.9166 | 0.9168 | 0.8992 |
+| **Naive Bayes** | 0.7639 | 0.9672 | 0.7654 | 0.7639 | 0.7615 | 0.7154 |
+| **Random Forest** | 0.9199 | 0.9933 | 0.9199 | 0.9199 | 0.9198 | 0.9032 |
+
+---
+
+## 💡 Summary of Model Behaviors
+
+* **Logistic Regression**: **Best overall performer.** Achieved the highest accuracy (92.14%), AUC (0.9948), and MCC (0.9050). Displays robust separation across almost all bean classes, especially `BOMBAY` (100% precision/recall) and `HOROZ`.
+* **Random Forest**: Very close second (91.99% accuracy). Provides strong, balanced class-wise results and generalizes extremely well without overfitting.
+* **k-Nearest Neighbors (kNN)**: High overall AUC (0.9833) and strong baseline performance (91.66% accuracy), though slightly sensitive to feature scaling in boundary classes like `SIRA`.
+* **Decision Tree**: Decent performance (89.20%), but exhibits higher variance and lower stability on complex class intersections.
+* **Naive Bayes**: Weakest performer (76.39%). Strong correlations among geometric bean dimensions violate Naive Bayes' fundamental feature-independence assumption.
+
+---
+
+## 🏆 Overall Winner
+
+**Logistic Regression** is the top-performing model for this dataset. It achieves the highest accuracy, AUC, and MCC while maintaining low computational overhead. **Random Forest** serves as an excellent ensemble alternative.
+
 ```
-
-# Dry Bean Classification Analysis
-
-## a. Problem Statement
-The aim of this project is to classify dry bean varieties using supervised machine learning models and compare their performance using evaluation metrics such as accuracy, AUC, precision, recall, F1 score, and MCC. The goal is to identify which classifier performs best on the Dry Bean dataset and to understand how each model behaves for each bean class.
-
-## b. Dataset Description
-The dataset used in this project is the Dry Bean Dataset, which contains multiple physical features of dry beans such as shape, size, and color-related measurements. The target variable is the bean class, which includes several categories such as BARBUNYA, BOMBAY, CALI, DERMASON, HOROZ, SEKER, and SIRA. The dataset was split into training and testing sets to evaluate the models fairly.
-
-## d. Models Used
-The following five classification models were implemented and evaluated:
-- Logistic Regression
-- Decision Tree Classifier
-- k-Nearest Neighbors (kNN)
-- Naive Bayes
-- Random Forest (Ensemble)
-
-## Comparison Table of Evaluation Metrics
-Note: The values below are the weighted metrics reported by the models on the test set.
-
-| ML Model Name | Accuracy | AUC | Precision | Recall | F1 | MCC |
-|---|---:|---:|---:|---:|---:|---:|
-| Logistic Regression | 0.9214 | 0.9948 | 0.9222 | 0.9214 | 0.9216 | 0.9050 |
-| Decision Tree | 0.8920 | 0.9450 | 0.8917 | 0.8920 | 0.8916 | 0.8696 |
-| kNN | 0.9166 | 0.9833 | 0.9174 | 0.9166 | 0.9168 | 0.8992 |
-| Naive Bayes | 0.7639 | 0.9672 | 0.7654 | 0.7639 | 0.7615 | 0.7154 |
-| Random Forest (Ensemble) | 0.9199 | 0.9933 | 0.9199 | 0.9199 | 0.9198 | 0.9032 |
-
-## Class-wise Analysis of Precision, Recall, F1 Score, and Support
-Support means the number of actual test samples belonging to that class. For example, if the support for BARBUNYA is 265, it means 265 test samples were truly BARBUNYA.
-
-### 1. Logistic Regression
-| Class | Precision | Recall | F1 Score | Support |
-|---|---:|---:|---:|---:|
-| BARBUNYA | 0.95 | 0.89 | 0.92 | 265 |
-| BOMBAY | 1.00 | 1.00 | 1.00 | 104 |
-| CALI | 0.93 | 0.94 | 0.94 | 326 |
-| DERMASON | 0.92 | 0.91 | 0.92 | 709 |
-| HOROZ | 0.96 | 0.95 | 0.96 | 386 |
-| SEKER | 0.93 | 0.95 | 0.94 | 406 |
-| SIRA | 0.85 | 0.88 | 0.86 | 527 |
-
-Observation: Logistic Regression achieved excellent results across all categories, especially for BOMBAY and HOROZ. It performed slightly weaker on SIRA, which indicates some overlap between SIRA and similar bean classes.
-
-### 2. Decision Tree
-| Class | Precision | Recall | F1 Score | Support |
-|---|---:|---:|---:|---:|
-| BARBUNYA | 0.88 | 0.91 | 0.89 | 265 |
-| BOMBAY | 1.00 | 1.00 | 1.00 | 104 |
-| CALI | 0.92 | 0.91 | 0.92 | 326 |
-| DERMASON | 0.88 | 0.90 | 0.89 | 709 |
-| HOROZ | 0.94 | 0.91 | 0.93 | 386 |
-| SEKER | 0.91 | 0.95 | 0.93 | 406 |
-| SIRA | 0.83 | 0.79 | 0.81 | 527 |
-
-Observation: The Decision Tree performed well but was less stable than the stronger models. It achieved perfect results for BOMBAY, but SIRA had the lowest F1 score, showing that a single tree can struggle with more complex class boundaries.
-
-### 3. k-Nearest Neighbors (kNN)
-| Class | Precision | Recall | F1 Score | Support |
-|---|---:|---:|---:|---:|
-| BARBUNYA | 0.95 | 0.88 | 0.91 | 265 |
-| BOMBAY | 1.00 | 1.00 | 1.00 | 104 |
-| CALI | 0.92 | 0.94 | 0.93 | 326 |
-| DERMASON | 0.91 | 0.91 | 0.91 | 709 |
-| HOROZ | 0.95 | 0.95 | 0.95 | 386 |
-| SEKER | 0.95 | 0.94 | 0.95 | 406 |
-| SIRA | 0.84 | 0.87 | 0.86 | 527 |
-
-Observation: kNN performed very well and gave strong results for most classes. It was also highly accurate for BOMBAY and HOROZ, but SIRA remained a harder class to classify.
-
-### 4. Naive Bayes
-| Class | Precision | Recall | F1 Score | Support |
-|---|---:|---:|---:|---:|
-| BARBUNYA | 0.68 | 0.46 | 0.55 | 265 |
-| BOMBAY | 1.00 | 1.00 | 1.00 | 104 |
-| CALI | 0.68 | 0.83 | 0.75 | 326 |
-| DERMASON | 0.87 | 0.83 | 0.85 | 709 |
-| HOROZ | 0.78 | 0.79 | 0.79 | 386 |
-| SEKER | 0.68 | 0.71 | 0.70 | 406 |
-| SIRA | 0.73 | 0.76 | 0.75 | 527 |
-
-Observation: Naive Bayes had the weakest performance overall. It performed very well for BOMBAY, but it struggled for BARBUNYA and SEKER, which suggests that the feature independence assumption is not ideal for this dataset.
-
-### 5. Random Forest (Ensemble)
-| Class | Precision | Recall | F1 Score | Support |
-|---|---:|---:|---:|---:|
-| BARBUNYA | 0.93 | 0.89 | 0.91 | 265 |
-| BOMBAY | 1.00 | 1.00 | 1.00 | 104 |
-| CALI | 0.94 | 0.94 | 0.94 | 326 |
-| DERMASON | 0.91 | 0.92 | 0.91 | 709 |
-| HOROZ | 0.97 | 0.95 | 0.96 | 386 |
-| SEKER | 0.94 | 0.96 | 0.95 | 406 |
-| SIRA | 0.86 | 0.85 | 0.86 | 527 |
-
-Observation: Random Forest delivered strong and balanced performance across all classes. It performed almost as well as Logistic Regression, showing that ensemble learning is effective for this dataset.
-
-## Observations on Model Performance
-| ML Model Name | Observation about model performance |
-|---|---|
-| Logistic Regression | Best overall performer with the highest accuracy, AUC, and MCC. It produced very strong and balanced results for nearly all bean classes. |
-| Decision Tree | Performed reasonably well but was less accurate and less stable than the other models, especially for SIRA. |
-| kNN | Showed strong performance and high AUC, but its accuracy was slightly below Logistic Regression. |
-| Naive Bayes | The weakest model on this dataset because its assumptions about feature independence did not fit the data well. |
-| Random Forest (Ensemble) | Very strong performance and a good alternative to Logistic Regression, with robust results across all classes. |
-
-## Overall Winner for This Dataset
-The overall winner for this dataset is Logistic Regression because it achieved the highest accuracy, the highest AUC, and the highest MCC among all tested models. Random Forest was a very close second and also performed exceptionally well.
