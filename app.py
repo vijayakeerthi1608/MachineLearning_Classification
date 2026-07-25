@@ -2,6 +2,8 @@ from pathlib import Path
 
 import joblib
 import pandas as pd
+import plotly.express as px
+import plotly.graph_objects as go
 import streamlit as st
 from sklearn.metrics import (
     accuracy_score,
@@ -40,6 +42,37 @@ DEFAULT_FEATURE_COLUMNS = [
 CLASS_LABELS = ["BARBUNYA", "BOMBAY", "CALI", "DERMASON", "HOROZ", "SEKER", "SIRA"]
 
 st.set_page_config(page_title="Dry Bean Classifier", page_icon="🌱", layout="wide")
+
+# Sidebar Theme Selector
+with st.sidebar:
+    st.subheader("Theme Options")
+    theme_mode = st.radio("App Mode", ["Dark Mode", "Light Mode"], index=0)
+    st.markdown("---")
+
+is_dark = theme_mode == "Dark Mode"
+plotly_template = "plotly_dark" if is_dark else "plotly_white"
+
+# Apply Custom Light/Dark CSS Adjustments
+if is_dark:
+    st.markdown(
+        """
+        <style>
+            .stApp { background-color: #0e1117; color: #fafafa; }
+            .stMetric { background-color: #1e2227; padding: 10px; border-radius: 8px; }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+else:
+    st.markdown(
+        """
+        <style>
+            .stApp { background-color: #f8f9fa; color: #212529; }
+            .stMetric { background-color: #ffffff; padding: 10px; border-radius: 8px; border: 1px solid #dee2e6; }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
 
 
 @st.cache_data(show_spinner=False)
@@ -146,8 +179,8 @@ def evaluate_models(dataset: pd.DataFrame, feature_columns: list[str], target_co
     return comparison_df, results
 
 
-st.title("Dry Bean Dataset Classification")
-st.write("Upload a test CSV file to evaluate all trained classifiers and compare their results.")
+st.title("🌱 Dry Bean Dataset Classification")
+st.write("Upload a test CSV file to evaluate all trained classifiers, compare their results, and inspect metrics.")
 
 with st.sidebar:
     st.subheader("Upload test data")
@@ -165,28 +198,83 @@ st.dataframe(dataset.head(), use_container_width=True)
 
 comparison_df, results = evaluate_models(dataset, feature_columns, target_column)
 
-st.subheader("2. Comparison of all models")
-st.dataframe(comparison_df, use_container_width=True)
+st.subheader("2. Comparison of All Models")
 
+tab1, tab2 = st.tabs(["📊 Metric Charts", "📋 Data Table"])
+
+with tab1:
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        # Grouped Bar Chart Comparing All Metrics Across Models
+        fig_grouped = px.bar(
+            comparison_df.reset_index().melt(id_vars="index", var_name="Metric", value_name="Score"),
+            x="index",
+            y="Score",
+            color="Metric",
+            barmode="group",
+            title="Overview: Model Comparison Across All Metrics",
+            labels={"index": "Model", "Score": "Metric Score"},
+            template=plotly_template,
+        )
+        fig_grouped.update_layout(yaxis=dict(range=[0, 1.05]))
+        st.plotly_chart(fig_grouped, use_container_width=True)
+
+    with col2:
+        # Horizontal Bar Chart Specifically for Accuracy
+        acc_df = comparison_df[["Accuracy"]].sort_values(by="Accuracy", ascending=True).reset_index()
+        fig_acc = px.bar(
+            acc_df,
+            x="Accuracy",
+            y="index",
+            orientation="h",
+            text="Accuracy",
+            title="Model Accuracy Comparison",
+            labels={"index": "Model", "Accuracy": "Accuracy Score"},
+            color="Accuracy",
+            color_continuous_scale="Viridis" if is_dark else "Blues",
+            template=plotly_template,
+        )
+        fig_acc.update_layout(xaxis=dict(range=[0, 1.05]))
+        st.plotly_chart(fig_acc, use_container_width=True)
+
+with tab2:
+    st.dataframe(comparison_df.style.highlight_max(axis=0, color="#1b4332" if is_dark else "#d8f3dc"), use_container_width=True)
+
+# Detailed Inspection
 selected_model = st.selectbox("Choose a model to inspect", list(results.keys()))
 selected_result = results[selected_model]
 
 st.subheader(f"3. Detailed results for {selected_model}")
 
-col1, col2 = st.columns(2)
-with col1:
-    st.write("Confusion Matrix")
-    cm_df = pd.DataFrame(
-        selected_result["cm"],
-        index=CLASS_LABELS,
-        columns=CLASS_LABELS,
-    )
-    st.dataframe(cm_df, use_container_width=True)
+# Display KPI cards for selected model
+m1, m2, m3, m4, m5 = st.columns(5)
+m1.metric("Accuracy", f"{selected_result['Accuracy']:.4f}")
+m2.metric("Precision", f"{selected_result['Precision']:.4f}")
+m3.metric("Recall", f"{selected_result['Recall']:.4f}")
+m4.metric("F1 Score", f"{selected_result['F1']:.4f}")
+m5.metric("MCC", f"{selected_result['MCC']:.4f}")
 
-with col2:
-    st.write("Classification Report")
+col_left, col_right = st.columns(2)
+with col_left:
+    st.write("**Confusion Matrix**")
+    # Heatmap visualization for Confusion Matrix
+    fig_cm = px.imshow(
+        selected_result["cm"],
+        x=CLASS_LABELS,
+        y=CLASS_LABELS,
+        text_auto=True,
+        labels=dict(x="Predicted Class", y="Actual Class", color="Count"),
+        color_continuous_scale="Purples" if is_dark else "Oranges",
+        template=plotly_template,
+    )
+    fig_cm.update_layout(title_text="Confusion Matrix Heatmap")
+    st.plotly_chart(fig_cm, use_container_width=True)
+
+with col_right:
+    st.write("**Classification Report**")
     report_df = pd.DataFrame(selected_result["report"]).T
-    st.dataframe(report_df, use_container_width=True)
+    st.dataframe(report_df.style.format("{:.4f}", na_rep="-"), use_container_width=True)
 
 st.subheader("4. Predicted classes preview")
 predicted_labels = [CLASS_LABELS[idx] for idx in selected_result["y_pred"]]
