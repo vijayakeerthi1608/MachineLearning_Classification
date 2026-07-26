@@ -154,6 +154,12 @@ This application is fully optimized for **Streamlit Community Cloud**:
 
 ---
 
+![alt text](image.png)
+![alt text](image-1.png)
+![alt text](image-2.png)
+![alt text](image-3.png)
+![alt text](image-4.png)
+
 ## 💡 Summary of Model Behaviors
 
 * **Logistic Regression**: **Best overall performer.** Achieved the highest accuracy (92.14%), AUC (0.9948), and MCC (0.9050). Displays robust separation across almost all bean classes, especially `BOMBAY` (100% precision/recall) and `HOROZ`.
