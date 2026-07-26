@@ -23,11 +23,22 @@ An end-to-end Machine Learning web application built with **Streamlit**, **Sciki
 
 https://machinelearningclassification-zca935sdb6frfc4c7utmjz.streamlit.app/
 
-## 📌 Project Overview
+## 📌 Project Overview / Problem Statement
 The objective of this project is to classify dry bean seeds into seven distinct varieties (`BARBUNYA`, `BOMBAY`, `CALI`, `DERMASON`, `HOROZ`, `SEKER`, `SIRA`) using physical shape, size, and boundary measurements. 
 
 Five distinct supervised machine learning models are trained and evaluated using standard classification metrics: **Accuracy, AUC, Precision, Recall, F1 Score, and MCC (Matthews Correlation Coefficient)**.
 
+## Dataset Overview & Metadata
+
+* **Source:** UCI Machine Learning Repository (Donated by Selçuk University, Turkey)
+* **Task Type:** Multiclass Classification
+* **Number of Instances:** 13,611 tabular records
+* **Number of Features:** 16 continuous numeric features (12 dimensional + 4 shape factors)
+* **Number of Target Classes:** 7 registered dry bean varieties (*Barbunya, Bombay, Cali, Dermason, Horoz, Seker, Sira*)
+* **Data Completeness:** 0 missing values across all records
+* **Extraction Method:** Derived from high-resolution digital image segmentation of seed grains
+
+The dataset captures precise geometric, morphological, and structural characteristics (e.g., `Area`, `Perimeter`, `MajorAxisLength`, `Eccentricity`, `Compactness`, and `ShapeFactor1`–`4`), providing a clean, complete benchmark for evaluating machine learning algorithms like Random Forest, kNN, and Support Vector Machines.
 ---
 
 ## ✨ Key Features
