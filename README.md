@@ -18,6 +18,11 @@ An end-to-end Machine Learning web application built with **Streamlit**, **Sciki
 
 ---
 
+
+## Streamlit application link
+
+https://machinelearningclassification-zca935sdb6frfc4c7utmjz.streamlit.app/
+
 ## 📌 Project Overview
 The objective of this project is to classify dry bean seeds into seven distinct varieties (`BARBUNYA`, `BOMBAY`, `CALI`, `DERMASON`, `HOROZ`, `SEKER`, `SIRA`) using physical shape, size, and boundary measurements. 
 
